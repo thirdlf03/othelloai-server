@@ -70,7 +70,7 @@ func convertToOthelloGrid(arr []int32, o *game.Othello) {
 		for j := 0; j < hw; j++ {
 			if arr[i*hw+j] == 0 {
 				o.Grid[i][j] = vacant
-			} else if arr[i*hw+j] == 1 {
+			} else if arr[i*hw+j] == 2 {
 				o.Grid[i][j] = white
 			} else {
 				o.Grid[i][j] = black
@@ -92,10 +92,13 @@ func (o *OthelloServer) GetAIMove(
 	body := req.Msg.Board
 	convertToOthelloGrid(body, &othello)
 
+	fmt.Println("Request body: ")
+	fmt.Println(req.Msg.Player)
+
 	if int(req.Msg.Player) == 1 {
-		player = white
-	} else {
 		player = black
+	} else {
+		player = white
 	}
 
 	y, x := ai(&othello, &b, player)
