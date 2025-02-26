@@ -25,7 +25,9 @@ const (
 
 type OthelloServer struct{}
 
-func ai(o *game.Othello, b *board.Board, aiPlayer int) (int, int) {
+var score int
+
+func ai(o *game.Othello, b *board.Board, aiPlayer int) (int, int, int) {
 	arr := make([]int, hw2)
 	fmt.Println("AIが思考中...")
 
@@ -46,20 +48,20 @@ func ai(o *game.Othello, b *board.Board, aiPlayer int) (int, int) {
 	policy := board.GetBook(*b)
 	if policy != -1 {
 		y, x := policy/hw, policy%hw
-		return y, x
+		return y, x, 0
 	}
 	if b.NStones >= hw2-completedDepth {
-		policy = board.SearchFinal(*b)
+		policy, score = board.SearchFinal(*b)
 	} else {
-		policy = board.Search(*b, 8)
+		policy, score = board.Search(*b, 8)
 	}
 	if policy == -1 {
 		fmt.Println("AIがパスします")
 		o.Player = 1 - o.Player
-		return -1, -1
+		return -1, -1, -1
 	}
 	y, x := policy/hw, policy%hw
-	return y, x
+	return y, x, score
 }
 
 var othello game.Othello
@@ -101,11 +103,12 @@ func (o *OthelloServer) GetAIMove(
 		player = white
 	}
 
-	y, x := ai(&othello, &b, player)
+	y, x, score := ai(&othello, &b, player)
 	res := connect.NewResponse[othellov1.GetAIMoveResponse](
 		&othellov1.GetAIMoveResponse{
-			Y: int32(y),
-			X: int32(x),
+			Y:     int32(y),
+			X:     int32(x),
+			Score: int32(score),
 		})
 	res.Header().Set("Othello-Version", "v1")
 	fmt.Println("AIの手: ", y, x, "color: ", req.Msg.Player)

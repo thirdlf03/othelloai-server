@@ -229,7 +229,7 @@ func negaScout(b Board, depth int, passed bool, alpha int, beta int) int {
 	return maxScore
 }
 
-func Search(b Board, depth int) int {
+func Search(b Board, depth int) (int, int) {
 	visitedNodes = 0
 	transposeTableUpper = HashMap{}
 	transposeTableLower = HashMap{}
@@ -277,7 +277,7 @@ func Search(b Board, depth int) int {
 		transposeTableLower, formerTransposeTableLower = formerTransposeTableLower, transposeTableLower
 		transposeTableLower = HashMap{}
 	}
-	return res
+	return res, alpha
 }
 
 func negaAlphaTransposeFinal(b Board, passed bool, alpha int, beta int) int {
@@ -404,7 +404,7 @@ func negaScoutFinal(b Board, passed bool, alpha int, beta int) int {
 	return maxScore
 }
 
-func SearchFinal(b Board) int {
+func SearchFinal(b Board) (int, int) {
 	visitedNodes = 0
 	transposeTableUpper = HashMap{}
 	transposeTableLower = HashMap{}
@@ -441,5 +441,5 @@ func SearchFinal(b Board) int {
 		alpha = max(alpha, score)
 	}
 	fmt.Print("depth: ", 1, " score: ", alpha, " policy: ", res, " nodes: ", visitedNodes, "\n")
-	return res
+	return res, alpha
 }

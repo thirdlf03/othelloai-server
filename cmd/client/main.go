@@ -22,15 +22,15 @@ func main() {
 		connect.NewRequest(&othellov1.GetAIMoveRequest{
 			Board: []int32{
 				0, 0, 0, 0, 0, 0, 0, 0,
-				0, 0, 0, 2, 0, 0, 0, 0,
-				0, 0, 0, 2, 0, 0, 0, 0,
-				0, 0, 0, 2, 2, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0,
+				0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 2, 1, 0, 0, 0,
+				0, 0, 0, 1, 2, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0,
 				0, 0, 0, 0, 0, 0, 0, 0,
 			},
-			Player: 2,
+			Player: 1,
 		}),
 	)
 
@@ -38,5 +38,5 @@ func main() {
 		log.Println(err)
 		return
 	}
-	log.Println(res.Msg.GetY(), res.Msg.GetX())
+	log.Println(res.Msg.GetY(), res.Msg.GetX(), res.Msg.GetScore())
 }
